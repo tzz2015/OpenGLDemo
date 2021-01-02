@@ -3,6 +3,7 @@
 //
 
 #include <TriangleSample.h>
+#include <TextureMapSample.h>
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 
@@ -48,6 +49,7 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
 				m_pCurSample = new TriangleSample();
 				break;
 			case SAMPLE_TYPE_KEY_TEXTURE_MAP:
+                m_pCurSample = new TextureMapSample();
 				break;
 			case SAMPLE_TYPE_KEY_YUV_TEXTURE_MAP:
 				break;

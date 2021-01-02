@@ -3,6 +3,8 @@ package com.byteflow.app;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +33,10 @@ import java.util.Arrays;
 
 import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
+import static com.byteflow.app.MyGLSurfaceView.IMAGE_FORMAT_RGBA;
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE;
 
+import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_TEXTURE_MAP;
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
 
 public class MainActivity extends AppCompatActivity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener {
@@ -43,7 +47,8 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
     };
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String[] SAMPLE_TITLES = {
-            "DrawTriangle"
+            "DrawTriangle",
+            "TextureMap"
     };
 
     private MyGLSurfaceView mGLSurfaceView;
@@ -180,7 +185,9 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                 switch (sampleType) {
                     case SAMPLE_TYPE_TRIANGLE:
                         break;
-
+                    case SAMPLE_TYPE_TEXTURE_MAP:
+                        loadRGBAImage(R.drawable.dzzz);
+                        break;
                     default:
                         break;
                 }
@@ -212,6 +219,28 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
             }
         }
         return true;
+    }
+
+    private Bitmap loadRGBAImage(int resId) {
+        InputStream is = this.getResources().openRawResource(resId);
+        Bitmap bitmap;
+        try {
+            bitmap = BitmapFactory.decodeStream(is);
+            if (bitmap != null) {
+                int bytes = bitmap.getByteCount();
+                ByteBuffer buf = ByteBuffer.allocate(bytes);
+                bitmap.copyPixelsToBuffer(buf);
+                byte[] byteArray = buf.array();
+                mGLRender.setImageData(IMAGE_FORMAT_RGBA, bitmap.getWidth(), bitmap.getHeight(), byteArray);
+            }
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
     }
 
 }

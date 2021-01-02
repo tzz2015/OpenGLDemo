@@ -10,6 +10,8 @@ import android.util.Log;
 @SuppressLint("ViewConstructor")
 public class MyGLSurfaceView extends GLSurfaceView {
     private static final String TAG = "MyGLSurfaceView";
+    public static final int IMAGE_FORMAT_RGBA = 0x01;
+
     private MyGLRender mGLRender;
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
