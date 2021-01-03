@@ -4,6 +4,8 @@
 
 #include <TriangleSample.h>
 #include <TextureMapSample.h>
+#include <NV21TextureMapSample.h>
+#include <VaoSample.h>
 #include "MyGLRenderContext.h"
 #include "LogUtil.h"
 
@@ -52,8 +54,10 @@ void MyGLRenderContext::SetParamsInt(int paramType, int value0, int value1)
                 m_pCurSample = new TextureMapSample();
 				break;
 			case SAMPLE_TYPE_KEY_YUV_TEXTURE_MAP:
+				m_pCurSample = new NV21TextureMapSample();
 				break;
 			case SAMPLE_TYPE_KEY_VAO:
+				m_pCurSample = new VaoSample();
 				break;
 			case SAMPLE_TYPE_KEY_FBO:
 				break;
