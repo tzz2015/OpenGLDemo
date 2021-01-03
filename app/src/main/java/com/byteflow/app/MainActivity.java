@@ -33,11 +33,13 @@ import java.util.Arrays;
 
 import static android.opengl.GLSurfaceView.RENDERMODE_CONTINUOUSLY;
 import static android.opengl.GLSurfaceView.RENDERMODE_WHEN_DIRTY;
+import static com.byteflow.app.MyGLSurfaceView.IMAGE_FORMAT_NV21;
 import static com.byteflow.app.MyGLSurfaceView.IMAGE_FORMAT_RGBA;
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE;
 
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_TEXTURE_MAP;
 import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_TRIANGLE;
+import static com.byteflow.app.MyNativeRender.SAMPLE_TYPE_YUV_TEXTURE_MAP;
 
 public class MainActivity extends AppCompatActivity implements AudioCollector.Callback, ViewTreeObserver.OnGlobalLayoutListener {
     private static final String TAG = "MainActivity";
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
     private static final int PERMISSION_REQUEST_CODE = 1;
     private static final String[] SAMPLE_TITLES = {
             "DrawTriangle",
-            "TextureMap"
+            "TextureMap",
+            "YUV Rendering"
     };
 
     private MyGLSurfaceView mGLSurfaceView;
@@ -188,6 +191,9 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
                     case SAMPLE_TYPE_TEXTURE_MAP:
                         loadRGBAImage(R.drawable.dzzz);
                         break;
+                    case SAMPLE_TYPE_YUV_TEXTURE_MAP:
+                        loadNV21Image();
+                        break;
                     default:
                         break;
                 }
@@ -241,6 +247,35 @@ public class MainActivity extends AppCompatActivity implements AudioCollector.Ca
             }
         }
         return bitmap;
+    }
+
+    private void loadNV21Image() {
+        InputStream is = null;
+        try {
+            is = getAssets().open("YUV_Image_840x1074.NV21");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int lenght = 0;
+        try {
+            lenght = is.available();
+            byte[] buffer = new byte[lenght];
+            is.read(buffer);
+            mGLRender.setImageData(IMAGE_FORMAT_NV21, 840, 1074, buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try
+            {
+                is.close();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

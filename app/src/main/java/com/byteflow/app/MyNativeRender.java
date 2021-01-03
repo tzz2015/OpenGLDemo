@@ -5,6 +5,7 @@ public class MyNativeRender {
 
     public static final int SAMPLE_TYPE_TRIANGLE = SAMPLE_TYPE;
     public static final int SAMPLE_TYPE_TEXTURE_MAP = SAMPLE_TYPE + 1;
+    public static final int SAMPLE_TYPE_YUV_TEXTURE_MAP = SAMPLE_TYPE + 2;
 
 
     static {

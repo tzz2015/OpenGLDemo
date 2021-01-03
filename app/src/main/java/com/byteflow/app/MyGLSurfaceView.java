@@ -11,6 +11,7 @@ import android.util.Log;
 public class MyGLSurfaceView extends GLSurfaceView {
     private static final String TAG = "MyGLSurfaceView";
     public static final int IMAGE_FORMAT_RGBA = 0x01;
+    public static final int IMAGE_FORMAT_NV21 = 0x02;
 
     private MyGLRender mGLRender;
     private int mRatioWidth = 0;
